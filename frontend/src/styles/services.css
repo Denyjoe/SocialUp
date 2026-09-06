@@ -1,0 +1,114 @@
+/* ============================================================
+   Services page: selecting a card and ordering from it.
+   Kept in its own file so it does not collide with edits to
+   index.css. Loaded after index.css, so these win on ties.
+   ============================================================ */
+
+.svc-card {
+  cursor: pointer;
+  position: relative;
+  /* Reserve room for the hint line so a card does not jump in height when
+     it becomes selected and swaps the hint for the order button. */
+  min-height: 9.5rem;
+}
+
+.svc-card:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.svc-card--selected {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-soft), var(--shadow);
+}
+
+.svc-card--selected:hover {
+  transform: none;
+}
+
+.svc-card__check {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  flex: 0 0 22px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #fff;
+}
+
+.svc-card__hint {
+  margin-top: auto;
+  padding-top: 0.55rem;
+  font-size: 0.74rem;
+  color: var(--text-subtle);
+}
+
+.svc-card__order {
+  margin-top: auto;
+  margin-top: 0.7rem;
+  min-height: 38px;
+  font-size: 0.85rem;
+}
+
+/* On a fine pointer the hint is noise, so surface it only on hover. */
+@media (hover: hover) and (pointer: fine) {
+  .svc-card__hint {
+    opacity: 0;
+    transition: opacity 0.15s ease;
+  }
+  .svc-card:hover .svc-card__hint {
+    opacity: 1;
+  }
+}
+
+/* Platform chips read as a tab strip, so make the active one obvious. */
+.platform-chip[aria-pressed="true"] {
+  border-color: var(--primary);
+}
+
+/* ============================================================
+   Toolbar stability
+   Switching platform re-filters the category <select>, and a select
+   sizes itself to its widest <option>. The count text changes width
+   too. Both used to shove the search box, which absorbs the leftover
+   space, so the row visibly resized on every tab press. Pin the two
+   variable-width items and the row stops moving.
+   ============================================================ */
+
+.svc-toolbar__select-wrap {
+  /* Fixed basis, so option text can no longer drive the width. */
+  flex: 0 0 15rem;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.svc-toolbar__select-wrap select {
+  /* Long category names truncate rather than fight the fixed width. */
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.svc-toolbar__count {
+  flex: 0 0 auto;
+  min-width: 8.5rem;
+  text-align: center;
+  /* Equal-width digits, so 267 and 1,950 occupy the same space. */
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 640px) {
+  /* Stacked on a phone, so each control simply spans the row. */
+  .svc-toolbar__search,
+  .svc-toolbar__select-wrap {
+    flex: 1 1 100%;
+  }
+
+  .svc-toolbar__count {
+    margin-left: 0;
+    text-align: left;
+  }
+}

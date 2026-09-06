@@ -1,0 +1,1141 @@
+/* ============================================================
+   Landing page
+   Mobile-first, and kept in its own file so it stays clear of
+   the shared design system in index.css. Every animation is
+   switched off under prefers-reduced-motion at the bottom.
+   ============================================================ */
+
+.landing {
+  overflow-x: clip;
+}
+
+.lp-section {
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+}
+
+@media (min-width: 768px) {
+  .lp-section {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+}
+
+.lp-center {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.lp-eyebrow {
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 650;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-subtle);
+  margin-bottom: 1rem;
+}
+
+.btn-lg {
+  min-height: 48px;
+  padding: 0.75rem 1.35rem;
+  font-size: 0.97rem;
+}
+
+.lp-gradient-text {
+  background: linear-gradient(100deg, var(--primary) 10%, #7c3aed 55%, #db2777 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: lp-gradient-shift 9s ease-in-out infinite;
+}
+
+/* Small gradient accent under every section heading, so the page reads as
+   one designed system rather than a stack of plain h2s. */
+.section-heading {
+  position: relative;
+}
+
+.section-heading h2 {
+  position: relative;
+  display: inline-block;
+}
+
+.section-heading h2::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -0.55rem;
+  transform: translateX(-50%);
+  width: 3rem;
+  height: 3px;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(90deg, var(--primary), #7c3aed);
+}
+
+/* ---------- Scroll reveal ---------- */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+
+/* ---------- Hero ---------- */
+
+.lp-hero {
+  position: relative;
+  padding: 2rem 0.9rem 2.5rem;
+  overflow: hidden;
+}
+
+.lp-hero__bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.lp-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: 0.5;
+}
+
+.lp-blob--a {
+  width: 24rem;
+  height: 24rem;
+  top: -8rem;
+  right: -7rem;
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.5), transparent 70%);
+  animation: lp-drift 16s ease-in-out infinite;
+}
+
+.lp-blob--b {
+  width: 20rem;
+  height: 20rem;
+  bottom: -8rem;
+  left: -6rem;
+  background: radial-gradient(circle, rgba(219, 39, 119, 0.32), transparent 70%);
+  animation: lp-drift 20s ease-in-out infinite reverse;
+}
+
+.lp-blob--c {
+  width: 30rem;
+  height: 30rem;
+  top: 40%;
+  left: 50%;
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.22), transparent 70%);
+  animation: lp-drift 24s ease-in-out infinite;
+  animation-delay: -6s;
+}
+
+/* Soft, still glow sitting behind the headline, like light falling on the
+   page from just above it. Separate from the drifting blobs, which keep
+   moving the whole time. */
+.lp-spotlight {
+  position: absolute;
+  top: -14rem;
+  left: 50%;
+  width: 56rem;
+  height: 40rem;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse at center, rgba(37, 99, 235, 0.16), transparent 65%);
+  pointer-events: none;
+}
+
+.lp-grid {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 46px 46px;
+  opacity: 0.4;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, #000 30%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, #000 30%, transparent 75%);
+}
+
+.lp-hero__inner {
+  position: relative;
+  z-index: 2;
+  max-width: 1160px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2.5rem;
+  align-items: center;
+}
+
+.lp-hero__copy h1 {
+  /* Fluid between phones (down to ~360px) and the fixed desktop size:
+     never needs rescaling, never overflows a narrow viewport. */
+  font-size: clamp(1.6rem, 4vw + 0.9rem, 2.1rem);
+  line-height: 1.15;
+  letter-spacing: -0.035em;
+  margin-bottom: 0.9rem;
+  /* Balance the heading's lines so a trailing short word (an orphan)
+     doesn't sit alone on the last line at phone widths. */
+  text-wrap: balance;
+  overflow-wrap: break-word;
+}
+
+.lp-hero__copy p {
+  color: var(--text-muted);
+  font-size: 1rem;
+  max-width: 34rem;
+  margin-bottom: 1.5rem;
+}
+
+.lp-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.lp-trust {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1.25rem;
+  padding: 0;
+  margin: 1.75rem 0 0;
+}
+
+.lp-trust li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.83rem;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.lp-trust svg {
+  color: var(--success);
+}
+
+@media (min-width: 900px) {
+  .lp-hero {
+    padding: 4rem 2rem 4.5rem;
+  }
+  .lp-hero__inner {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    gap: 3rem;
+  }
+  .lp-hero__copy h1 {
+    font-size: 3.15rem;
+  }
+  .lp-hero__copy p {
+    font-size: 1.1rem;
+  }
+}
+
+/* ---------- Hero product preview ---------- */
+
+.preview {
+  position: relative;
+  max-width: 26rem;
+  margin: 1rem auto 2.75rem;
+  animation: lp-float 7s ease-in-out infinite;
+}
+
+.preview__glow {
+  position: absolute;
+  inset: -12% -8%;
+  background: radial-gradient(circle at 60% 35%, rgba(37, 99, 235, 0.3), transparent 65%);
+  filter: blur(38px);
+  z-index: 0;
+}
+
+.preview__window {
+  position: relative;
+  z-index: 1;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+
+.preview__chrome {
+  display: flex;
+  gap: 0.35rem;
+  padding: 0.65rem 0.85rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-alt);
+}
+
+.preview__chrome span {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--border-strong);
+}
+
+.preview__body {
+  padding: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.preview__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+
+.preview__balance {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.preview__balance-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+.preview__balance small {
+  display: block;
+  font-size: 0.66rem;
+  color: var(--text-muted);
+  line-height: 1.2;
+}
+
+.preview__balance strong {
+  font-size: 0.92rem;
+  letter-spacing: -0.015em;
+}
+
+.preview__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-pill);
+  background: var(--warning-soft);
+  color: var(--warning);
+  font-size: 0.68rem;
+  font-weight: 650;
+  white-space: nowrap;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.preview__status.is-done {
+  background: var(--success-soft);
+  color: var(--success);
+}
+
+.preview__order {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.75rem;
+  background: var(--surface-alt);
+}
+
+.preview__order-head {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.7rem;
+}
+
+.preview__order-head strong {
+  display: block;
+  font-size: 0.85rem;
+}
+
+.preview__order-head small {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.preview__brand {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  flex: 0 0 30px;
+  border-radius: 9px;
+  font-size: 15px;
+  color: #fff;
+}
+
+.preview__brand--ig {
+  background: linear-gradient(45deg, #f09433, #dc2743 50%, #bc1888);
+}
+
+.preview__brand--tt {
+  background: #111827;
+}
+
+.preview__brand--yt {
+  background: #ff0000;
+}
+
+.preview__track {
+  height: 7px;
+  border-radius: var(--radius-pill);
+  background: var(--border);
+  overflow: hidden;
+}
+
+.preview__fill {
+  height: 100%;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(90deg, var(--primary), #7c3aed);
+  transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.preview__track-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.4rem;
+  font-size: 0.68rem;
+  color: var(--text-muted);
+}
+
+.preview__mini-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+}
+
+.preview__mini {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.6rem;
+}
+
+.preview__mini small {
+  display: block;
+  margin-top: 0.4rem;
+  font-size: 0.68rem;
+  color: var(--text-muted);
+}
+
+.preview__mini strong {
+  font-size: 0.82rem;
+}
+
+.preview__chip {
+  position: absolute;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.7rem;
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  font-size: 0.73rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Both chips sit outside the card, so they can never cover the balance or
+   the order rows underneath. */
+.preview__chip--one {
+  top: -0.85rem;
+  right: 1.5rem;
+  color: var(--success);
+  animation: lp-float 5.5s ease-in-out infinite;
+}
+
+.preview__chip--two {
+  bottom: -1.9rem;
+  left: 1.5rem;
+  color: var(--primary);
+  animation: lp-float 6.5s ease-in-out infinite reverse;
+}
+
+@media (max-width: 420px) {
+  .preview__chip--one {
+    right: 0.75rem;
+  }
+  .preview__chip--two {
+    left: 0.75rem;
+  }
+}
+
+/* ---------- Platform marquee ---------- */
+
+.lp-marquee-section {
+  padding: 1.5rem 0 0.5rem;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.lp-marquee {
+  overflow: hidden;
+  padding: 0.75rem 0 1.25rem;
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+.lp-marquee__track {
+  display: flex;
+  gap: 2.25rem;
+  width: max-content;
+  animation: lp-scroll 32s linear infinite;
+}
+
+.lp-marquee__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.lp-marquee__item svg {
+  font-size: 1.3rem;
+  filter: drop-shadow(0 0 0 transparent);
+  transition: filter 0.2s ease;
+}
+
+.lp-marquee__item:hover svg {
+  filter: drop-shadow(0 0 6px currentColor);
+}
+
+/* ---------- Stats ---------- */
+
+.lp-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.8rem;
+}
+
+@media (min-width: 860px) {
+  .lp-stats {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.lp-stat {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xs);
+  padding: 1.25rem 1rem;
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.lp-stat:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+  border-color: var(--primary);
+}
+
+.lp-stat strong {
+  display: block;
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--primary);
+}
+
+.lp-stat span {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.lp-stats__note {
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--text-subtle);
+  margin: 0.9rem 0 0;
+}
+
+/* ---------- Steps ---------- */
+
+.lp-steps {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.9rem;
+}
+
+@media (min-width: 640px) {
+  .lp-steps {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .lp-steps {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.lp-step {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.35rem 1.1rem 1.1rem;
+  box-shadow: var(--shadow-xs);
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+/* Shared "glow card" treatment: a gradient bar that slides in from the top
+   on hover, echoing the hero's gradient without repeating a whole blob per
+   card. */
+.lp-step::before,
+.lp-feature::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), #7c3aed, #db2777);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s ease;
+}
+
+.lp-step:hover::before,
+.lp-feature:hover::before {
+  transform: scaleX(1);
+}
+
+.lp-step:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow);
+  border-color: var(--primary);
+}
+
+.lp-step__num {
+  position: absolute;
+  top: -0.7rem;
+  right: 1rem;
+  width: 1.9rem;
+  height: 1.9rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--primary);
+  color: var(--on-primary);
+  font-size: 0.78rem;
+  font-weight: 700;
+  box-shadow: var(--shadow-sm);
+}
+
+.lp-step h3 {
+  margin: 0.7rem 0 0.3rem;
+}
+
+.lp-step p {
+  margin: 0;
+  font-size: 0.87rem;
+  color: var(--text-muted);
+}
+
+/* ---------- Pricing preview ---------- */
+
+.lp-price-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.9rem;
+}
+
+@media (min-width: 640px) {
+  .lp-price-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .lp-price-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.lp-price-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.1rem;
+  box-shadow: var(--shadow-xs);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.lp-price-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--primary);
+  box-shadow: var(--shadow);
+}
+
+.lp-price-card h3 {
+  margin: 0.6rem 0 0.5rem;
+  font-size: 0.95rem;
+  line-height: 1.35;
+  /* Supplier names run very long, so clamp to two lines and keep the full
+     text in the title attribute. */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 2.6em;
+}
+
+.lp-price-card__rate strong {
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--primary);
+}
+
+.lp-price-card__meta {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.65rem;
+  padding-top: 0.65rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.76rem;
+  color: var(--text-muted);
+}
+
+.lp-price-card__order {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  margin-top: 0.9rem;
+  width: 100%;
+}
+
+/* ---------- Pricing table (desktop) / cards (mobile) ---------- */
+
+/* Cards are the default, small-screen presentation. */
+@media (min-width: 780px) {
+  .lp-price-grid {
+    display: none;
+  }
+}
+
+.lp-pricing-table-wrap {
+  display: none;
+}
+
+@media (min-width: 780px) {
+  .lp-pricing-table-wrap {
+    display: block;
+    position: relative;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  /* A faint wash of the brand gradient behind the glass, like the rest of
+     the page's blobs, but held still and much softer. */
+  .lp-pricing-table-wrap::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 70% 60% at 15% 0%, rgba(37, 99, 235, 0.07), transparent 60%),
+      radial-gradient(ellipse 70% 60% at 100% 100%, rgba(219, 39, 119, 0.06), transparent 60%);
+    pointer-events: none;
+  }
+
+  .lp-pricing-table {
+    position: relative;
+    width: 100%;
+    min-width: 0;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+
+  .lp-pricing-table thead th {
+    text-align: left;
+    padding: 0.9rem 1.15rem;
+    font-size: 0.72rem;
+    font-weight: 650;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    /* --text-subtle reads under 4.5:1 in dark mode at this size. */
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+
+  .lp-pricing-table tbody tr {
+    transition: background 0.15s ease;
+  }
+
+  .lp-pricing-table tbody tr:hover {
+    background: var(--surface-alt);
+  }
+
+  .lp-pricing-table tbody tr:not(:last-child) td {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .lp-pricing-table td {
+    padding: 0.95rem 1.15rem;
+    vertical-align: middle;
+  }
+
+  .lp-pricing-table__service {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    min-width: 0;
+  }
+
+  .lp-pricing-table__service span:last-child {
+    display: block;
+    max-width: 22rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 550;
+  }
+
+  .lp-pricing-table__badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    flex: 0 0 28px;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 14px;
+  }
+
+  .lp-pricing-table__price {
+    font-weight: 700;
+    color: var(--primary);
+    white-space: nowrap;
+  }
+
+  .lp-pricing-table__price small {
+    font-weight: 500;
+    color: var(--text-muted);
+  }
+
+  .lp-pricing-table__meta {
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  .lp-pricing-table__order {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.4rem 0.85rem;
+    border-radius: var(--radius-pill);
+    background: linear-gradient(100deg, var(--primary), #7c3aed);
+    color: #fff;
+    font-size: 0.82rem;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .lp-pricing-table__order:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px -6px rgba(37, 99, 235, 0.55);
+  }
+}
+
+/* ---------- Features ---------- */
+
+.lp-feature {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1.1rem;
+  box-shadow: var(--shadow-xs);
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.lp-feature:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow);
+  border-color: var(--primary);
+}
+
+.lp-feature h3 {
+  margin: 0.75rem 0 0.35rem;
+}
+
+.lp-feature p {
+  margin: 0;
+  font-size: 0.87rem;
+  color: var(--text-muted);
+}
+
+/* ---------- Closing CTA ---------- */
+
+.lp-cta {
+  position: relative;
+  border-radius: var(--radius-lg);
+  padding: 2.5rem 1.25rem;
+  text-align: center;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(219, 39, 119, 0.09));
+  border: 1px solid var(--border);
+}
+
+.lp-cta::before,
+.lp-cta::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  pointer-events: none;
+}
+
+.lp-cta::before {
+  width: 16rem;
+  height: 16rem;
+  top: -6rem;
+  left: -4rem;
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.35), transparent 70%);
+  animation: lp-drift 18s ease-in-out infinite;
+}
+
+.lp-cta::after {
+  width: 14rem;
+  height: 14rem;
+  bottom: -6rem;
+  right: -3rem;
+  background: radial-gradient(circle, rgba(219, 39, 119, 0.3), transparent 70%);
+  animation: lp-drift 22s ease-in-out infinite reverse;
+}
+
+.lp-cta__inner {
+  position: relative;
+  z-index: 1;
+}
+
+.lp-cta h2 {
+  font-size: 1.6rem;
+  margin-bottom: 0.5rem;
+}
+
+.lp-cta p {
+  color: var(--text-muted);
+  max-width: 32rem;
+  margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+  .lp-cta {
+    padding: 3.5rem 2rem;
+  }
+  .lp-cta h2 {
+    font-size: 2.1rem;
+  }
+}
+
+/* ---------- Keyframes ---------- */
+
+@keyframes lp-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-9px);
+  }
+}
+
+@keyframes lp-gradient-shift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes lp-drift {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-18px, 22px) scale(1.08);
+  }
+}
+
+@keyframes lp-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    /* The platform list is rendered twice, so moving half the track is a
+       seamless loop. */
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .preview,
+  .preview__chip--one,
+  .preview__chip--two,
+  .lp-blob--a,
+  .lp-blob--b,
+  .lp-blob--c,
+  .lp-cta::before,
+  .lp-cta::after,
+  .lp-gradient-text,
+  .lp-marquee__track {
+    animation: none;
+  }
+
+  .preview__fill {
+    transition: none;
+  }
+
+  .lp-step:hover,
+  .lp-feature:hover,
+  .lp-price-card:hover {
+    transform: none;
+  }
+}
+
+/* ---------- Reveal fallback ----------
+   Declared last so no component rule can re-enable a transition on it.
+   Used when the browser is not producing animation frames, so content is
+   never stranded part way through a stalled transition. */
+
+.reveal--instant,
+.reveal--instant.is-visible {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+
+/* Static fallback for the hero preview, used when the browser is not
+   producing animation frames. Without this the progress bar would stall at
+   one width while the label underneath advanced, which reads as a bug. */
+
+.preview--static {
+  animation: none;
+}
+
+.preview--static .preview__fill,
+.preview--static .preview__status {
+  transition: none;
+}
+
+.preview--static .preview__chip--one,
+.preview--static .preview__chip--two {
+  animation: none;
+}
+
+/* ---------- Footer ---------- */
+
+.public-footer {
+  text-align: left;
+}
+
+.lp-footer {
+  max-width: 1160px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.75rem;
+  padding: 1rem 0 1.75rem;
+}
+
+@media (min-width: 640px) {
+  .lp-footer {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 960px) {
+  .lp-footer {
+    grid-template-columns: 1.6fr repeat(3, 1fr);
+    gap: 2.5rem;
+  }
+}
+
+.lp-footer__brand .brand {
+  margin-bottom: 0.6rem;
+  padding: 0;
+}
+
+.lp-footer__brand p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  max-width: 24rem;
+}
+
+.lp-footer__col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.lp-footer__col h4 {
+  margin: 0 0 0.25rem;
+  font-size: 0.73rem;
+  font-weight: 650;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-subtle);
+}
+
+.lp-footer__col a {
+  font-size: 0.87rem;
+  color: var(--text-muted);
+}
+
+.lp-footer__col a:hover {
+  color: var(--primary);
+}
+
+.lp-footer__base {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: var(--text-subtle);
+}

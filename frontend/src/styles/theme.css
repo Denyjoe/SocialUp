@@ -1,0 +1,295 @@
+/* ============================================================
+   Theme contrast fixes
+   Loaded last so these win over index.css, which is edited
+   separately. Every value here was chosen by measuring WCAG
+   contrast in the running app, in both themes.
+
+   The key problem this solves: --primary, --success, --danger,
+   --warning and --info were tuned for dark text on a light
+   background, and were never re-tuned for dark mode, so accent
+   text sat at roughly 2.5:1 against dark surfaces. --primary is
+   also used as a solid button fill, so it cannot simply be
+   lightened without breaking the white label on top. Hence the
+   --on-primary token: the label colour follows the fill.
+   ============================================================ */
+
+:root {
+  /* Label colour used on top of a solid --primary fill. */
+  --on-primary: #ffffff;
+  /* Label colour used on top of a solid --text fill. */
+  --on-text: #ffffff;
+}
+
+/* Was #64748b, which measured 4.28:1 on --surface-alt and failed AA. */
+:root {
+  --text-muted: #55606f;
+  --text-subtle: #6b7686;
+}
+
+[data-theme="dark"] {
+  /* Muted text was 1.93:1 against the top bar. */
+  --text-muted: #a9b6c7;
+  --text-subtle: #8b9aad;
+
+  /* Accent colours lightened for legibility on dark surfaces. */
+  --primary: #86b2ff;
+  --primary-hover: #a0c4ff;
+  --success: #5bd98a;
+  --danger: #ff8b8b;
+  --warning: #f5c164;
+  --info: #6fccf5;
+
+  /* Fills are now light, so their labels must be dark. */
+  --on-primary: #0b1220;
+  --on-text: #0b1220;
+}
+
+/* ---------- Labels sitting on solid fills ---------- */
+
+button,
+.btn {
+  color: var(--on-primary);
+}
+
+/* Doubled selector deliberately outranks any single "container-scoped
+   link/button" rule (e.g. `.public-nav__mobile a`, specificity 0,1,1) —
+   found via a real bug: a .btn placed inside such a container (the
+   mobile nav drawer's "Dashboard" link) lost its white label to that
+   container's own link colour, since a bare `.btn` (0,1,0) can't beat
+   it on specificity alone regardless of source order. A blue .btn's
+   label must always be var(--on-primary), no matter what it's nested
+   inside, now or later. */
+.btn.btn {
+  color: var(--on-primary);
+}
+
+/* Each variant below carries the base .btn class too (e.g.
+   className="btn btn-secondary"), so it needs the same doubled-specificity
+   treatment to keep outranking .btn.btn above — otherwise a secondary/
+   ghost/danger button nested in some future container-scoped `a`/`button`
+   rule would silently inherit the solid-fill's on-primary colour instead
+   of its own (this exact class of bug is what broke the mobile drawer's
+   Dashboard button in the first place). */
+.btn-secondary.btn-secondary {
+  color: var(--text);
+}
+
+.btn-ghost.btn-ghost {
+  color: var(--text-muted);
+}
+
+.btn-danger.btn-danger,
+.btn-danger.btn-danger:hover:not(:disabled) {
+  /* Danger keeps a white label in both themes: its fill stays dark enough. */
+  color: #ffffff;
+}
+
+.link-button {
+  color: var(--primary);
+}
+
+.brand__mark,
+.avatar,
+.svc-card__check,
+.lp-step__num {
+  color: var(--on-primary);
+}
+
+.admin-badge {
+  background: var(--text);
+  color: var(--on-text);
+  border-color: var(--text);
+}
+
+/* ---------- Soft tinted surfaces ---------- */
+
+/* These borders were fixed pastels that only worked on a white page.
+   Deriving them from the text colour keeps them correct in both themes. */
+.form-error,
+.form-success,
+.status-badge--completed,
+.status-badge--pending,
+.status-badge--processing,
+.status-badge--in_progress,
+.status-badge--partial,
+.status-badge--error,
+.status-badge--canceled,
+.status-badge--refunded,
+.status-pill--active,
+.status-pill--banned,
+.status-pill--suspended,
+.ticket-status--open,
+.ticket-status--answered,
+.ticket-status--pending,
+.verification-banner,
+.announcement-banner,
+.announcement-banner--warning,
+.announcement-banner--success,
+.price-estimate,
+.wallet-widget,
+.bulk-bar,
+.how-to-note,
+.ticket-message--staff {
+  border-color: color-mix(in srgb, currentColor 26%, transparent);
+}
+
+.verification-banner__actions button {
+  border-color: color-mix(in srgb, var(--warning) 32%, transparent);
+  color: var(--warning);
+  background: var(--surface);
+}
+
+.verification-banner__actions button:hover:not(:disabled) {
+  background: var(--warning-soft);
+  color: var(--warning);
+}
+
+/* ---------- Dark mode surface tints ---------- */
+
+[data-theme="dark"] {
+  /* Slightly stronger than the originals so tinted panels read as
+     distinct from the page behind them. */
+  --primary-soft: rgba(134, 178, 255, 0.16);
+  --primary-soft-hover: rgba(134, 178, 255, 0.24);
+  --success-soft: rgba(91, 217, 138, 0.14);
+  --danger-soft: rgba(255, 139, 139, 0.14);
+  --warning-soft: rgba(245, 193, 100, 0.14);
+  --info-soft: rgba(111, 204, 245, 0.14);
+}
+
+/* The code block is deliberately dark in both themes, so on a dark page
+   it needs a border to separate it from the surface behind it. */
+[data-theme="dark"] .code-block {
+  border: 1px solid var(--border);
+}
+
+/* Native form controls and the select chevron follow the theme.
+   The repeat and position have to be restated: some selects set the
+   background shorthand, which resets them, and the chevron then tiles
+   across the whole control. */
+[data-theme="dark"] select {
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23a9b6c7' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.7rem center;
+}
+
+/* The services toolbar draws its own chevron as an element, so this select
+   must not paint one of its own. */
+[data-theme="dark"] .svc-toolbar__select-wrap select {
+  background-image: none;
+}
+
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea {
+  color-scheme: dark;
+}
+
+/* Options render with the OS palette otherwise, which on Windows shows
+   dark text on a dark list. */
+[data-theme="dark"] select option {
+  background: var(--surface);
+  color: var(--text);
+}
+
+/* ---------- Landing page in dark mode ---------- */
+
+[data-theme="dark"] .lp-grid {
+  opacity: 0.16;
+}
+
+[data-theme="dark"] .lp-cta {
+  background: linear-gradient(135deg, rgba(134, 178, 255, 0.14), rgba(219, 39, 119, 0.12));
+}
+
+[data-theme="dark"] .preview__chrome span {
+  background: var(--border-strong);
+}
+
+/* ---------- Translucent bars ----------
+   The top bar, bottom nav and public nav hardcoded a translucent white,
+   so in dark mode they stayed white and their contents became unreadable.
+   A token keeps the frosted effect while following the theme. */
+
+:root {
+  --bar-bg: rgba(255, 255, 255, 0.88);
+  --bar-bg-strong: rgba(255, 255, 255, 0.94);
+}
+
+[data-theme="dark"] {
+  --bar-bg: rgba(30, 41, 59, 0.88);
+  --bar-bg-strong: rgba(30, 41, 59, 0.95);
+}
+
+.topbar,
+.public-nav {
+  background: var(--bar-bg);
+}
+
+.bottom-nav {
+  background: var(--bar-bg-strong);
+}
+
+/* Small note under the currency selector, explaining that a converted
+   figure is indicative and the wallet is charged in the base currency. */
+.user-menu__note {
+  margin: 0.1rem 0.65rem 0.4rem;
+  font-size: 0.72rem;
+  line-height: 1.35;
+  color: var(--text-subtle);
+}
+
+/* ── Public nav language selector ────────────────────────────────────────
+   Visitors are not signed in, so the user menu that normally carries the
+   language and currency selectors is not rendered. This gives the public
+   pages their own compact switcher. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.public-nav__lang {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: var(--text-muted);
+}
+
+.public-nav__lang select {
+  /* Sized by its widest option, so the nav does not resize on change. */
+  width: auto;
+  min-width: 0;
+  padding: 0.3rem 0.4rem;
+  border: 1px solid transparent;
+  border-radius: 0.5rem;
+  background: transparent;
+  background-image: none;
+  color: inherit;
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+
+.public-nav__lang select:hover,
+.public-nav__lang select:focus-visible {
+  border-color: var(--border);
+}
+
+@media (max-width: 560px) {
+  /* The nav is already tight on a phone; the label icon is enough. */
+  .public-nav__lang select {
+    padding-inline: 0.2rem;
+  }
+}
+
+/* At 0.78rem this is normal-size text, so it needs the 4.5:1 ratio. The
+   subtle tone measured 4.29:1 on the section background in light mode. */
+.lp-stats__note {
+  color: var(--text-muted);
+}
