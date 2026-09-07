@@ -75,11 +75,21 @@ export function ProvidersAdminPage() {
                   <td>{p.balance_last_checked_at ? new Date(p.balance_last_checked_at).toLocaleString() : "Never"}</td>
                   <td>{p.is_active ? "Yes" : "No"}</td>
                   <td className="admin-row-actions">
-                    <button onClick={() => setEditing(p)}>Edit</button>
-                    <button onClick={() => balanceMutation.mutate(p.id)} disabled={balanceMutation.isPending}>
+                    <button className="btn-secondary btn-sm" onClick={() => setEditing(p)}>
+                      Edit
+                    </button>
+                    <button
+                      className="btn-secondary btn-sm"
+                      onClick={() => balanceMutation.mutate(p.id)}
+                      disabled={balanceMutation.isPending}
+                    >
                       Check balance
                     </button>
-                    <button onClick={() => syncMutation.mutate(p.id)} disabled={syncMutation.isPending}>
+                    <button
+                      className="btn-secondary btn-sm"
+                      onClick={() => syncMutation.mutate(p.id)}
+                      disabled={syncMutation.isPending}
+                    >
                       Sync services
                     </button>
                   </td>

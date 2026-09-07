@@ -721,6 +721,40 @@ tbody tr:hover {
   flex-wrap: wrap;
 }
 
+/* Every row-action button (Edit / Check balance / Sync services / Adjust
+   balance / Suspend / Ban / ...) gets the same fixed width regardless of
+   its own label length, so a row of them reads as one tidy, aligned group
+   instead of a ragged row of different-sized pills. */
+.admin-row-actions .btn-secondary,
+.admin-row-actions .btn-danger {
+  flex: 0 0 auto;
+  min-width: 7.5rem;
+}
+
+@media (max-width: 767px) {
+  /* Stacks into a single full-width column instead of wrapping into an
+     uneven grid of fixed-width pills, which doesn't leave enough room per
+     button on a phone-width table cell. min-width here (not 0) keeps this
+     column wide enough for its longest label ("Adjust balance") to stay
+     on one line — the table's own auto layout otherwise happily squeezes
+     this column down to whatever's left over from Email/Balance/Joined,
+     wrapping just this one button to two lines while its siblings stay
+     one. The table already scrolls horizontally (.table-wrap) for wide
+     content, so reserving real width here is the correct trade, not a
+     regression. */
+  .admin-row-actions {
+    flex-direction: column;
+    align-items: stretch;
+    min-width: 10rem;
+  }
+
+  .admin-row-actions .btn-secondary,
+  .admin-row-actions .btn-danger {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
 .admin-filters {
   display: flex;
   flex-wrap: wrap;

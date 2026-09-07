@@ -83,20 +83,28 @@ export function UsersAdminPage() {
                     <td>{u.orders_count}</td>
                     <td>{new Date(u.date_joined).toLocaleDateString()}</td>
                     <td className="admin-row-actions">
-                      <button onClick={() => setBalanceTarget(u)}>Adjust balance</button>
+                      <button className="btn-secondary btn-sm" onClick={() => setBalanceTarget(u)}>
+                        Adjust balance
+                      </button>
                       {u.status !== "suspended" && (
-                        <button onClick={() => statusMutation.mutate({ id: u.id, status: "suspended" })}>
+                        <button
+                          className="btn-secondary btn-sm"
+                          onClick={() => statusMutation.mutate({ id: u.id, status: "suspended" })}
+                        >
                           Suspend
                         </button>
                       )}
                       {u.status !== "active" && (
-                        <button onClick={() => statusMutation.mutate({ id: u.id, status: "active" })}>
+                        <button
+                          className="btn-secondary btn-sm"
+                          onClick={() => statusMutation.mutate({ id: u.id, status: "active" })}
+                        >
                           Reactivate
                         </button>
                       )}
                       {u.status !== "banned" && (
                         <button
-                          className="danger"
+                          className="btn-danger btn-sm"
                           onClick={() => statusMutation.mutate({ id: u.id, status: "banned" })}
                         >
                           Ban
