@@ -1514,7 +1514,10 @@ tbody tr:hover {
   cursor: pointer;
 }
 
-.user-menu__item-btn:hover {
+/* Doubled class — see .faq-item__question.faq-item__question:hover for why
+   a bare `.user-menu__item-btn:hover` loses to the generic `button:hover`
+   blue fill. */
+.user-menu__item-btn.user-menu__item-btn:hover {
   background: var(--surface-alt);
 }
 
@@ -1978,7 +1981,12 @@ tbody tr:hover {
   text-align: left;
 }
 
-.faq-item__question:hover {
+/* Doubled class beats the generic `button:hover:not(:disabled)` reset
+   above (0,2,1) — a bare `.faq-item__question:hover` (0,2,0) loses to it
+   and the question silently repaints solid blue with dark text still on
+   top, unreadable. Same trap already hit and fixed this way for
+   .sidebar-toggle. */
+.faq-item__question.faq-item__question:hover {
   background: var(--surface-alt);
   color: var(--text);
 }
@@ -2130,7 +2138,9 @@ tbody tr:hover {
   border-radius: var(--radius-sm);
 }
 
-.modal-close:hover {
+/* Doubled class — see .faq-item__question.faq-item__question:hover for why
+   a bare `.modal-close:hover` loses to the generic `button:hover` blue fill. */
+.modal-close.modal-close:hover {
   background: var(--surface-alt);
   color: var(--text);
 }
@@ -2467,7 +2477,10 @@ tbody tr:hover {
   min-height: 0;
 }
 
-.announcement-banner__dismiss:hover {
+/* Doubled class — see .faq-item__question.faq-item__question:hover for why
+   a bare `.announcement-banner__dismiss:hover` loses `background` to the
+   generic `button:hover` fill (this dismiss icon flashed solid blue). */
+.announcement-banner__dismiss.announcement-banner__dismiss:hover {
   background: transparent;
   color: inherit;
   opacity: 1;
@@ -2898,7 +2911,11 @@ tbody tr:hover {
   box-shadow: var(--shadow-xs);
 }
 
-.platform-chip:hover {
+/* Doubled class — see .faq-item__question.faq-item__question:hover for why
+   a bare `.platform-chip:hover` loses `background` to the generic
+   `button:hover` fill (text stayed readable via `color`, but every chip
+   lost its own platform-brand hover color to plain blue instead). */
+.platform-chip.platform-chip:hover {
   background: var(--chip-accent);
   border-color: var(--chip-accent);
   color: var(--on-primary);
