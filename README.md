@@ -53,7 +53,7 @@ The frontend is a React single-page app with a mobile-first responsive layout: a
 
 ### Option A: Docker (matches production topology)
 
-Requires Docker Desktop (on Windows, with the WSL2 backend).
+Requires Docker Desktop (on Windows, with the WSL2 backend)
 
 ```bash
 docker compose up --build
